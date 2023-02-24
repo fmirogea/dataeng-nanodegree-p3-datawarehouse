@@ -6,32 +6,51 @@ This is Project 3: Data Warehouse, part of Udacity's Nanodegree in Data Engineer
 
 In this project, we have to build an ETL pipeline for a database hosted on Redshift. This is achieved by loading data from S3 to staging tables on Redshift and executing SQL statements that create the analytics tables from these staging tables.
 
+## Architecture Overview
+
+The architecture of this project is defined as follows.
+
+- The project files are in a GitHub repository.
+- The Jupyter notebook currently runs on a Udacity instance.
+- The Source Data used for this project lays already in an AWS S3 bucket.
+- Using the project files, the Redshift infrastructure can be created and deleted, and the ETL pipeline can be triggered. 
+
+![Architecture Overview](/media/Project3_DataWarehouse-Architecture.drawio.png)
+
+
 ## Project files and running the project
 
 Running the project:
 
-1 - Specify the AWS Access Key and Secret.
-2 - Run the cells in `IaC.ipynb` to create the infrastructure in AWS.
-3 - Once the infrastructure has been created, run `python create_tables.py` to create the tables in Redshift.
-4 - Run `python create_tables.py` to run the ETL pipeline i.e. load the data from S3 into the staging tables in Redshift and execute the SQL statements to create the analytics tables.
+1. Specify the AWS Access Key and Secret in the `dwh.cfg` file 
+2. Run the cells in `IaC.ipynb` to create the infrastructure in AWS.
+3. Once the infrastructure has been created, run `python create_tables.py` to create the tables in Redshift.
+4. Run `python create_tables.py` to run the ETL pipeline i.e. load the data from S3 into the staging tables in Redshift and execute the SQL statements to create the analytics tables.
+
+## Costs
+
+Costs associated with the Redshift cluster (us-east-1 zone on 24.02.2023):
+- DWH_CLUSTER_TYPE=single-node, DWH_NUM_NODES=1, DWH_NODE_TYPE=dc2.large: 0,25 USD/h
+- DWH_CLUSTER_TYPE=multi-node, DWH_NUM_NODES=2, DWH_NODE_TYPE=dc2.large: 0,51 USD/h
+- DWH_CLUSTER_TYPE=multi-node, DWH_NUM_NODES=4, DWH_NODE_TYPE=dc2.large: 1,01 USD/h
+
+A dc2.large node has 2 vCPU and 15 GiB Memory.
 
 ## File descriptions (To do!!)
 
 Different files and folders can be found in the repository:
 
-- The `Data` folder contains the song and log datasets.
 - The `media` folder contains diagramms used in this document to represent the data model and the etl process.
-- The `create_tables.py` script contains the code necessary for creating the database and its tables.
+- The `create_tables.py` script contains the code necessary for creating the staging and analytics tables in Redshift.
 - The `sql_queries.py` contains the different SQL queries used by the other scripts.
 - The `etl.py` script contains the code necessary for running the pipeline.
-- The `etl.ipynb` Notebook was used for coding in an interactive way the `etl.py` script.
-- The `test.ipynb` Notebook includes some SQL queries for debugging i.e. testing the content of the tables at any time.
-- The `er_generator.py` script contains the code necessary for generating the entity relation diagram.
-
-
-## Architecture Overview
-
+- The `IaC.ipynb` Notebook includes the scripts required to create and delete the AWS Infrastructure by using the Python SDK based in Boto3.
 
 ## Database schema and ETL pipeline design
 
+The data model can be described as follows:
 
+- The staging tables contain the data in the same format as it could be found in the source.
+- Five analytical tables have been defined, following a 
+
+![Data Model](/media/Project3_DataWarehouse-DataModel.drawio.png)
