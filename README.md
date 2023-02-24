@@ -47,12 +47,17 @@ Different files and folders can be found in the repository:
 
 ## Database schema and ETL pipeline design
 
+The relations during the ETL pipeline can be described as follows:
+![ETL](/media/Project3_DataWarehouse-ETL.drawio.png)
+- The staging tables contain the data in the same format as it could be found in the source. For those tables all fields are kept nullable. The goal is to get the data as it is in the source.
+
 The data model can be described as follows:
 
 ![Data Model](/media/Project3_DataWarehouse-DataModel.drawio.png)
 
-- The staging tables contain the data in the same format as it could be found in the source. For those tables all fields are kept nullable. The goal is to get the data as it is in the source.
 - Five analytical tables have been defined, following a Star Schema, optimizing for providing fast answers to analytical queries.
+- The smaller tables `artists`, `songs` and `users` follow an ALL distribution i.e. are replicated on all slices to speed up joins.
+- `times` and `songplays` tables are distributed following a KEY distribution. 
 
 
 ## Additional Documentation

@@ -57,7 +57,7 @@ CREATE TABLE staging_songs(
 
 songplay_table_create = ("""
 CREATE TABLE songplays(
-    sp_songlay_id INT IDENTITY(0,1),
+    sp_songlay_id INT IDENTITY(0,1) PRIMARY KEY,
     sp_start_time TIMESTAMP not null, 
     sp_user_id INTEGER not null, 
     sp_level VARCHAR(10) not null, 
@@ -66,7 +66,10 @@ CREATE TABLE songplays(
     sp_session_id INTEGER not null, 
     sp_location VARCHAR(256) not null, 
     sp_user_agent VARCHAR(256) not null
-);
+)
+DISTSTYLE KEY
+DISTKEY ( sp_start_time )
+SORTKEY ( sp_start_time );
 
 """)
 
@@ -77,7 +80,9 @@ CREATE TABLE users(
     u_last_name VARCHAR(25) not null,
     u_gender VARCHAR(1) not null,
     u_level VARCHAR(10) not null
-);
+)
+DISTSTYLE ALL
+SORTKEY ( u_user_id );
 
 """)
 
@@ -88,7 +93,9 @@ CREATE TABLE songs(
     s_artist_id VARCHAR(25) not null,
     s_year INTEGER,
     s_duration NUMERIC(10,6) not null
-);
+)
+DISTSTYLE ALL
+SORTKEY ( s_song_id );
 """)
 
 artist_table_create = ("""
@@ -98,7 +105,9 @@ CREATE TABLE artists(
     a_location VARCHAR(256),
     a_latitude NUMERIC(9,6),
     a_longitude NUMERIC(9,6)
-);
+)
+DISTSTYLE ALL
+SORTKEY ( a_artist_id );
 """)
 
 time_table_create = ("""
@@ -110,7 +119,10 @@ CREATE TABLE times(
     t_month INTEGER not null,
     t_year INTEGER not null,
     t_weekday varchar(25) not null
-);
+)
+DISTSTYLE KEY
+DISTKEY ( t_start_time )
+SORTKEY ( t_start_time );
 """)
 
 
@@ -135,7 +147,7 @@ staging_songs_copy = ("""
 # FINAL TABLES
 
 songplay_table_insert = ("""
-
+INSERT INTO songplays (sp_start_time, sp_user_id, sp_level, sp_song_id, sp_artist_id, sp_session_id, sp_location, sp_user_agent)
 SELECT
     TIMESTAMP 'epoch' + (e.ts/1000) * interval '1 second' AS sp_start_time, 
     e.userId AS sp_user_id, 
