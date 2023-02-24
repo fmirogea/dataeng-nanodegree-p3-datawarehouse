@@ -36,8 +36,7 @@ Costs associated with the Redshift cluster (us-east-1 zone on 24.02.2023):
 
 A dc2.large node has 2 vCPU and 15 GiB Memory.
 
-## File descriptions (To do!!)
-
+## File descriptions
 Different files and folders can be found in the repository:
 
 - The `media` folder contains diagramms used in this document to represent the data model and the etl process.
@@ -50,7 +49,11 @@ Different files and folders can be found in the repository:
 
 The data model can be described as follows:
 
-- The staging tables contain the data in the same format as it could be found in the source.
-- Five analytical tables have been defined, following a 
-
 ![Data Model](/media/Project3_DataWarehouse-DataModel.drawio.png)
+
+- The staging tables contain the data in the same format as it could be found in the source. For those tables all fields are kept nullable. The goal is to get the data as it is in the source.
+- Five analytical tables have been defined, following a Star Schema, optimizing for providing fast answers to analytical queries.
+
+
+## Additional Documentation
+Further notes on this project and Data Warehouse design can be found ![here](/DataWarehouse.md).
